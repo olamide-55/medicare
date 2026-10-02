@@ -1,14 +1,12 @@
 package com.medicare.controller;
 
-import java.util.Map;
-
+import com.medicare.model.Patient;
+import com.medicare.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.medicare.model.Patient;
-import com.medicare.service.PatientService;
+import java.util.Map;
 
 @RestController
 public class PatientController {
@@ -36,7 +34,14 @@ public class PatientController {
     public Map<String, Object> apiLogin(@RequestBody Map<String, String> data) {
         var result = patientService.login(data.get("email"), data.get("password"));
         if (result.isPresent()) {
-            return Map.of("success", true, "message", "Login successful!", "name", result.get().getFullName());
+            // Added "id" here. The browser needs this number so it can remember
+            // which patient is logged in, without asking them to type it in later.
+            return Map.of(
+                "success", true,
+                "message", "Login successful!",
+                "name", result.get().getFullName(),
+                "id", result.get().getId()
+            );
         }
         return Map.of("success", false, "message", "Invalid email or password");
     }

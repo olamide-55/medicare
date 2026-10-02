@@ -174,7 +174,7 @@ public class MedicareController {
                 """;
     }
 
-    @GetMapping("/login")
+       @GetMapping("/login")
     public String login() {
         return """
                 <!DOCTYPE html>
@@ -188,10 +188,10 @@ public class MedicareController {
                         .auth-card { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 380px; }
                         .auth-card .logo { text-align: center; font-size: 22px; font-weight: bold; color: #1a5c4a; margin-bottom: 25px; }
                         label { display: block; font-size: 13px; margin-bottom: 5px; color: #555; margin-top: 12px; }
-                        input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+                        input { width: 100%%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
                         .row-between { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 13px; }
                         .row-between a { color: #1a5c4a; text-decoration: none; }
-                        .submit-btn { width: 100%; background: #1a5c4a; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600; margin-top: 20px; cursor: pointer; }
+                        .submit-btn { width: 100%%; background: #1a5c4a; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600; margin-top: 20px; cursor: pointer; }
                         .switch-link { text-align: center; margin-top: 15px; font-size: 13px; color: #666; }
                         .switch-link a { color: #1a5c4a; font-weight: 600; text-decoration: none; }
                     </style>
@@ -217,6 +217,7 @@ public class MedicareController {
                     <script>
                         function submitLogin(event) {
                             event.preventDefault();
+
                             fetch('/api/login', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
@@ -229,6 +230,8 @@ public class MedicareController {
                             .then(result => {
                                 alert(result.message);
                                 if (result.success) {
+                                    sessionStorage.setItem('patientId', result.id);
+                                    sessionStorage.setItem('patientName', result.name);
                                     window.location.href = '/patients';
                                 }
                             })
@@ -241,7 +244,6 @@ public class MedicareController {
                 </html>
                 """;
     }
-
     @GetMapping("/patients")
     public String patientDashboard() {
         return """
