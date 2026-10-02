@@ -21,6 +21,14 @@ public class Patient {
 
     private String phone;
 
+    // ---------- New medical profile fields ----------
+    private String gender;
+    private String bloodType;
+    private String allergies;
+    private String diseases;
+    private String height;
+    private String weight;
+
     public Patient() {}
 
     public Patient(String fullName, String email, String password, String phone) {
@@ -44,4 +52,22 @@ public class Patient {
 
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
+
+    public String getBloodType() { return bloodType; }
+    public void setBloodType(String bloodType) { this.bloodType = bloodType; }
+
+    public String getAllergies() { return allergies; }
+    public void setAllergies(String allergies) { this.allergies = allergies; }
+
+    public String getDiseases() { return diseases; }
+    public void setDiseases(String diseases) { this.diseases = diseases; }
+
+    public String getHeight() { return height; }
+    public void setHeight(String height) { this.height = height; }
+
+    public String getWeight() { return weight; }
+    public void setWeight(String weight) { this.weight = weight; }
 }

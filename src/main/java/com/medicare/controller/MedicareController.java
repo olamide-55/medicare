@@ -103,9 +103,9 @@ public class MedicareController {
                         .auth-card { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 380px; }
                         .auth-card .logo { text-align: center; font-size: 22px; font-weight: bold; color: #1a5c4a; margin-bottom: 20px; }
                         label { display: block; font-size: 13px; margin-bottom: 5px; color: #555; margin-top: 12px; }
-                        input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+                        input { width: 100%%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
                         .terms { display: flex; align-items: center; gap: 8px; margin-top: 15px; font-size: 13px; color: #666; }
-                        .submit-btn { width: 100%; background: #e08a3e; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600; margin-top: 20px; cursor: pointer; }
+                        .submit-btn { width: 100%%; background: #e08a3e; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600; margin-top: 20px; cursor: pointer; }
                         .switch-link { text-align: center; margin-top: 15px; font-size: 13px; color: #666; }
                         .switch-link a { color: #1a5c4a; font-weight: 600; text-decoration: none; }
                         .error-msg { color: #c0392b; font-size: 12px; margin-top: 5px; display: none; }
@@ -174,7 +174,7 @@ public class MedicareController {
                 """;
     }
 
-       @GetMapping("/login")
+    @GetMapping("/login")
     public String login() {
         return """
                 <!DOCTYPE html>
@@ -232,7 +232,7 @@ public class MedicareController {
                                 if (result.success) {
                                     sessionStorage.setItem('patientId', result.id);
                                     sessionStorage.setItem('patientName', result.name);
-                                    window.location.href = '/patients';
+                                    window.location.href = '/profile';
                                 }
                             })
                             .catch(error => alert('Error: ' + error));
@@ -244,7 +244,8 @@ public class MedicareController {
                 </html>
                 """;
     }
-    @GetMapping("/patients")
+
+       @GetMapping("/patients")
     public String patientDashboard() {
         return """
                 <!DOCTYPE html>
@@ -259,14 +260,14 @@ public class MedicareController {
                         .sidebar .logo { font-size: 26px; margin-bottom: 20px; }
                         .sidebar a { color: #cfe3da; text-decoration: none; font-size: 20px; }
                         .sidebar a.active { color: #fff; }
-                        .main { margin-left: 80px; padding: 30px 40px; width: 100%; }
+                        .main { margin-left: 80px; padding: 30px 40px; flex: 1; }
                         .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
                         .topbar h1 { font-size: 22px; color: #2c3e50; }
                         .topbar .profile { display: flex; align-items: center; gap: 10px; font-weight: 600; }
                         .top-row { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
                         .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
                         .patient-card { text-align: center; width: 200px; }
-                        .patient-card .avatar { width: 70px; height: 70px; border-radius: 50%; background: #d8e6df; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+                        .patient-card .avatar { width: 70px; height: 70px; border-radius: 50%%; background: #d8e6df; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
                         .patient-card h3 { margin-bottom: 4px; }
                         .patient-card p { color: #888; font-size: 13px; margin-bottom: 12px; }
                         .patient-card button { background: #3aa17e; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; }
@@ -281,7 +282,7 @@ public class MedicareController {
                         .info-list div span { display: block; color: #999; font-size: 12px; }
                         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px; }
                         .list-item:last-child { border-bottom: none; }
-                        .add-btn { width: 100%; padding: 10px; margin-top: 10px; border: 1px dashed #bbb; background: none; border-radius: 6px; cursor: pointer; color: #555; }
+                        .add-btn { width: 100%%; padding: 10px; margin-top: 10px; border: 1px dashed #bbb; background: none; border-radius: 6px; cursor: pointer; color: #555; }
                     </style>
                 </head>
                 <body>
@@ -297,13 +298,13 @@ public class MedicareController {
                     <div class="main">
                         <div class="topbar">
                             <h1>Current Appointment</h1>
-                            <div class="profile">👤 Roger Curtis</div>
+                            <div class="profile">👤 <span id="loggedInName">Guest</span></div>
                         </div>
                         <div class="top-row">
                             <div class="card patient-card">
                                 <div class="avatar">🧑</div>
-                                <h3>Roger Curtis</h3>
-                                <p>Age: 36</p>
+                                <h3 id="patientNameCard">Guest</h3>
+                                <p>Patient</p>
                                 <button onclick="alert('Vitals updated!')">Update</button>
                             </div>
                             <div class="card vital-card"><div class="icon">❤️</div><div class="label">Heart Rate</div><div class="value">80<span>bpm</span></div></div>
@@ -314,13 +315,13 @@ public class MedicareController {
                             <div class="card">
                                 <h3>Information</h3>
                                 <div class="info-list">
-                                    <div><span>Gender</span>Male</div>
-                                    <div><span>Blood Type</span>O+ (Positive)</div>
-                                    <div><span>Allergies</span>Milk, Penicillin</div>
-                                    <div><span>Diseases</span>Diabetes, Blood Disorders</div>
-                                    <div><span>Height</span>1.78m</div>
-                                    <div><span>Weight</span>65 kg</div>
-                                    <div><span>Patient ID</span>208898786</div>
+                                    <div><span>Gender</span><span id="infoGender">-</span></div>
+                                    <div><span>Blood Type</span><span id="infoBloodType">-</span></div>
+                                    <div><span>Allergies</span><span id="infoAllergies">-</span></div>
+                                    <div><span>Diseases</span><span id="infoDiseases">-</span></div>
+                                    <div><span>Height</span><span id="infoHeight">-</span></div>
+                                    <div><span>Weight</span><span id="infoWeight">-</span></div>
+                                    <div><span>Patient ID</span><span id="infoId">-</span></div>
                                     <div><span>Last Visit</span>25th October 2019</div>
                                 </div>
                             </div>
@@ -348,6 +349,111 @@ public class MedicareController {
                             item.className = "list-item";
                             item.innerHTML = "<span>💊 " + name + "</span><span>" + new Date().toLocaleDateString() + " · " + duration + "</span>";
                             list.appendChild(item);
+                        }
+                    </script>
+                    <script>
+                        window.onload = function() {
+                            const name = sessionStorage.getItem('patientName');
+                            const patientId = sessionStorage.getItem('patientId');
+
+                            if (name) {
+                                document.getElementById('loggedInName').innerText = name;
+                                document.getElementById('patientNameCard').innerText = name;
+                            }
+
+                            if (!patientId) return;
+
+                            // Fetch the real saved profile data from the database
+                            fetch('/api/profile/' + patientId)
+                                .then(response => response.json())
+                                .then(data => {
+                                    document.getElementById('infoGender').innerText = data.gender || '-';
+                                    document.getElementById('infoBloodType').innerText = data.bloodType || '-';
+                                    document.getElementById('infoAllergies').innerText = data.allergies || '-';
+                                    document.getElementById('infoDiseases').innerText = data.diseases || '-';
+                                    document.getElementById('infoHeight').innerText = data.height || '-';
+                                    document.getElementById('infoWeight').innerText = data.weight || '-';
+                                    document.getElementById('infoId').innerText = data.id || '-';
+                                })
+                                .catch(error => console.log('Could not load profile:', error));
+                        };
+                    </script>
+                </body>
+                </html>
+                """;
+    }
+        @GetMapping("/profile")
+    public String profilePage() {
+        return """
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Complete Your Profile - MediCare Hub</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f2; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+                        .card { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 420px; }
+                        .card h2 { margin-bottom: 20px; color: #1a3c34; }
+                        label { display: block; font-size: 13px; margin-bottom: 5px; color: #555; margin-top: 12px; }
+                        input, select { width: 100%%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+                        .submit-btn { width: 100%%; background: #e08a3e; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600; margin-top: 20px; cursor: pointer; }
+                        .skip-link { text-align: center; margin-top: 15px; font-size: 13px; }
+                        .skip-link a { color: #888; }
+                    </style>
+                </head>
+                <body>
+                    <div class="card">
+                        <h2>Complete Your Medical Profile</h2>
+                        <form id="profileForm" onsubmit="return submitProfile(event)">
+                            <label>Gender</label>
+                            <select id="gender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+
+                            <label>Blood Type</label>
+                            <input type="text" id="bloodType" placeholder="e.g. O+ (Positive)">
+
+                            <label>Allergies</label>
+                            <input type="text" id="allergies" placeholder="e.g. Milk, Penicillin">
+
+                            <label>Existing Conditions</label>
+                            <input type="text" id="diseases" placeholder="e.g. Diabetes">
+
+                            <label>Height</label>
+                            <input type="text" id="height" placeholder="e.g. 1.78m">
+
+                            <label>Weight</label>
+                            <input type="text" id="weight" placeholder="e.g. 65kg">
+
+                            <button type="submit" class="submit-btn">Save Profile</button>
+                        </form>
+                        <div class="skip-link"><a href="/patients">Skip for now</a></div>
+                    </div>
+                    <script>
+                        function submitProfile(event) {
+                            event.preventDefault();
+                            fetch('/api/profile/update', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    patientId: sessionStorage.getItem('patientId'),
+                                    gender: document.getElementById('gender').value,
+                                    bloodType: document.getElementById('bloodType').value,
+                                    allergies: document.getElementById('allergies').value,
+                                    diseases: document.getElementById('diseases').value,
+                                    height: document.getElementById('height').value,
+                                    weight: document.getElementById('weight').value
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(result => {
+                                alert(result.message);
+                                if (result.success) window.location.href = '/patients';
+                            })
+                            .catch(error => alert('Error: ' + error));
+                            return false;
                         }
                     </script>
                 </body>

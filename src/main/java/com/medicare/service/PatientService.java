@@ -29,4 +29,27 @@ public class PatientService {
         }
         return Optional.empty();
     }
+
+        public java.util.List<Patient> getAllPatients() {
+        return patientRepository.findAll();
+    }
+
+        public Patient updateProfile(Long patientId, String gender, String bloodType, String allergies, String diseases, String height, String weight) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+
+        patient.setGender(gender);
+        patient.setBloodType(bloodType);
+        patient.setAllergies(allergies);
+        patient.setDiseases(diseases);
+        patient.setHeight(height);
+        patient.setWeight(weight);
+
+        return patientRepository.save(patient);
+    }
+
+    public Patient getPatientById(Long patientId) {
+        return patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+    }
 }
